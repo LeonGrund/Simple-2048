@@ -15,6 +15,7 @@ undoGrid = [[],[],[],[]]
 --instantiate boolean
 hasUndone = True
 
+
 --we want to write a function that prints out introduction
 intro :: IO ()
 intro = do {putStrLn "#################################"; 
@@ -28,8 +29,12 @@ intro = do {putStrLn "#################################";
 			putStrLn "     Press any key to start...   ";
 			putStrLn " ";
 			putStrLn "#################################";}
+			
+--input grid and print out state
+printGrid :: int a => [a] -> IO int
+printGrid [x] = (show x)
 
---intro x = #################################\n\n     Press any key to start...   "
 
 main = do
 	intro 
+	printGrid [1]
