@@ -10,7 +10,10 @@ maxUndo = 1
 
 --instantiate grids
 grid = [[],[],[],[]]
-undoGrid = [[],[],[],[]]
+undoGrid = [[1,2,3,4],
+	       [5,6,7,8],
+	       [9,10,11,12],
+	       [13,14,15,16]]
 
 --instantiate boolean
 hasUndone = True
@@ -35,6 +38,14 @@ printGrid :: int a => [a] -> IO int
 printGrid [x] = (show x)
 
 
+printGrid :: [[Integer]] -> IO ()
+printGrid x = do {putStrLn $ show (x!!0); putStrLn $ show (x!!1); putStrLn $ show (x!!2); putStrLn $ show (x!!3);}
+
 main = do
+<<<<<<< HEAD
 	intro 
 	printGrid [1]
+=======
+	intro
+	printGrid undoGrid
+>>>>>>> origin/master
