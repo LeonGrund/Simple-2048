@@ -18,7 +18,6 @@ undoGrid = [[1,2,3,4],
 --instantiate boolean
 hasUndone = True
 
-
 --we want to write a function that prints out introduction
 intro :: IO ()
 intro = do {putStrLn "#################################"; 
@@ -32,20 +31,35 @@ intro = do {putStrLn "#################################";
 			putStrLn "     Press any key to start...   ";
 			putStrLn " ";
 			putStrLn "#################################";}
-			
---input grid and print out state
-printGrid :: int a => [a] -> IO int
-printGrid [x] = (show x)
 
+--intro x = #################################\n\n     Press any key to start...   "
 
 printGrid :: [[Integer]] -> IO ()
-printGrid x = do {putStrLn $ show (x!!0); putStrLn $ show (x!!1); putStrLn $ show (x!!2); putStrLn $ show (x!!3);}
+printGrid x = do {putStrLn $ show (x!!0);
+	      	  putStrLn $ show (x!!1);
+		  putStrLn $ show (x!!2);
+		  putStrLn $ show (x!!3);}
+
+getDirection :: String -> String
+getDirection dir = case dir of
+	     "w" -> "w"
+	     "d" -> "d"
+	     "s" -> "s"
+	     "a" -> "a"
+	     _ -> "invalid"
+	     
+--check what direction and then modif grid
+--updateGrid
+
 
 main = do
-<<<<<<< HEAD
-	intro 
-	printGrid [1]
-=======
 	intro
 	printGrid undoGrid
->>>>>>> origin/master
+
+
+--THIS IN WHILE LOOP
+
+	dir <- getLine
+	updateGrid (getDirection dir)
+	printGrid undoGrid
+	
