@@ -49,7 +49,8 @@ getDirection dir = case dir of
 	     _ -> "invalid"
 	     
 --check what direction and then modif grid
---updateGrid
+updateGrid :: String -> IO ()
+-- helper functions for w,d,s,a to modif grid
 
 
 main = do
