@@ -15,6 +15,11 @@ undoGrid = [[1,2,3,4],
 	       [9,10,11,12],
 	       [13,14,15,16]]
 
+aGrid = [[0,0,0,0],
+	[0,0,0,0],
+	[0,0,0,0],
+	[0,0,0,0]]
+
 --instantiate boolean
 hasUndone = True
 
@@ -32,11 +37,23 @@ intro = do {putStrLn "#################################";
 			putStrLn " ";
 			putStrLn "#################################";}
 
---intro x = #################################\n\n     Press any key to start...   "
+--given grid and integer, insert integer into grid at random
+--location that contains a 0
+insertValue :: [[Integer]] -> Integer -> [[Integer]]
+insertValue x y  =  x
+
+replaceNth n newVal (x:xs)
+     | n == 0 = newVal:xs
+     | otherwise = x:replaceNth (n-1) newVal xs
+
+--will take x and y coordinate and replace the value with newVal	 
+--replaceNth2d x1 y1 newVal ([x]:xs)
+--	replaceNth2d = [newVal :x] : xs
+
 
 printGrid :: [[Integer]] -> IO ()
 printGrid x = do {putStrLn $ show (x!!0);
-	      	  putStrLn $ show (x!!1);
+	  	  putStrLn $ show (x!!1);
 		  putStrLn $ show (x!!2);
 		  putStrLn $ show (x!!3);}
 
@@ -49,22 +66,22 @@ getDirection dir = case dir of
 	     _ -> "ErrorInvalidDir"
 
 --up/down/right/leftGrid have to be coded 
-updateGrid :: String ->  [[Integer],[Integer],[Integer],[Integer]] -> [[Integer],[Integer],[Integer],[Integer]]
-updateGrd dir grid = case dir of
-	  "up" g -> upGrid g
-	  "down" g ->downGrid g
-	  "right" g -> rightGrid g
-	  "left" g -> leftGrid g
-	  _ g -> g
+--updateGrid :: String ->  [[Integer],[Integer],[Integer],[Integer]] -> [[Integer],[Integer],[Integer],[Integer]]
+--updateGrd dir grid = case dir of
+--	  "up" g -> upGrid g
+--	  "down" g ->downGrid g
+--	  "right" g -> rightGrid g
+--	  "left" g -> leftGrid g
+--	  _ g -> g
 
 main = do
 	intro
 	printGrid undoGrid
-
+	--printGrid(insertValue aGrid 5)
 
 --THIS IN WHILE LOOP
 
-	dir <- getLine
-	updateGrid (getDirection dir) (undoGrid)
-	printGrid undoGrid
+	--dir <- getLine
+	--updateGrid (getDirection dir) (undoGrid)
+	--printGrid undoGrid
 	
