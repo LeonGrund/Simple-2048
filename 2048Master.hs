@@ -42,16 +42,20 @@ printGrid x = do {putStrLn $ show (x!!0);
 
 getDirection :: String -> String
 getDirection dir = case dir of
-	     "w" -> "w"
-	     "d" -> "d"
-	     "s" -> "s"
-	     "a" -> "a"
-	     _ -> "invalid"
-	     
---check what direction and then modif grid
-updateGrid :: String -> IO ()
--- helper functions for w,d,s,a to modif grid
+	     "w" -> "up"
+	     "d" -> "right"
+	     "s" -> "down"
+	     "a" -> "left"
+	     _ -> "ErrorInvalidDir"
 
+--up/down/right/leftGrid have to be coded 
+updateGrid :: String ->  [[Integer],[Integer],[Integer],[Integer]] -> [[Integer],[Integer],[Integer],[Integer]]
+updateGrd dir grid = case dir of
+	  "up" g -> upGrid g
+	  "down" g ->downGrid g
+	  "right" g -> rightGrid g
+	  "left" g -> leftGrid g
+	  _ g -> g
 
 main = do
 	intro
@@ -61,6 +65,6 @@ main = do
 --THIS IN WHILE LOOP
 
 	dir <- getLine
-	updateGrid (getDirection dir)
+	updateGrid (getDirection dir) (undoGrid)
 	printGrid undoGrid
 	
