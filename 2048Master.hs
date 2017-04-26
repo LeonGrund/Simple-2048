@@ -75,13 +75,13 @@ indXHelper row num =
 --checks each row for num and return the col number (x index) of the num in grid
 indX :: [[Integer]] -> Integer -> Integer
 indX grid num = 
-     	  if (checkRow num (grid!!0) && (indXHelper (grid!!0) num) /= 9999)
+     	  if (checkRow num (grid!!0))
 	     then (indXHelper (grid!!0) num)
-	     else if (checkRow num (grid!!1) && (indXHelper (grid!!1) num) /= 9999)
+	     else if (checkRow num (grid!!1))
 	     	   then (indXHelper (grid!!1) num)
-		   else if (checkRow num (grid!!2) && (indXHelper (grid!!2) num) /= 9999)
+		   else if (checkRow num (grid!!2))
 	     	   	then (indXHelper (grid!!2) num)
-			else if (checkRow num (grid!!3) && (indXHelper (grid!!3) num) /= 9999)
+			else if (checkRow num (grid!!3))
 	     		     then (indXHelper (grid!!3) num)
 			     else 9999
 
@@ -144,3 +144,10 @@ main = do
 	--replace the row containing 6 with [9,9,9,9]
 	--printGrid (replaceNth (indY undoGrid 6) [9,9,9,9] undoGrid)
 
+	--replace the row containing at index of col where 4 is  with [9,9,9,9]
+	printGrid (replaceNth (indX undoGrid 4) [9,9,9,9] undoGrid)
+
+	--printGrid (updateGrid (getDirection dir) undoGrid)
+	
+	--printGrid undoGrid
+	
