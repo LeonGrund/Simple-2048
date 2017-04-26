@@ -40,6 +40,23 @@ printGrid x = do {putStrLn $ show (x!!0);
 		  putStrLn $ show (x!!2);
 		  putStrLn $ show (x!!3);}
 
+checkRow :: Integer -> [Integer] ->Bool
+checkRow num row 
+         |num`elem`row =True
+         |otherwise=False
+
+indY :: [[Integer]] -> Integer -> Integer
+indY grid num = 
+     	  if (checkRow num (grid!!0))
+	     then 0
+	     else if (checkRow num (grid!!1))
+	     	  then 1
+		  else if (checkRow num (grid!!2))
+		       then 2
+		       else if (checkRow num (grid!!3))
+		       	    then 3
+			    else 9999
+
 replaceNth n newVal (x:xs)
      | n == 0 = newVal:xs
      | otherwise = x:replaceNth (n-1) newVal xs
@@ -95,7 +112,9 @@ main = do
 --THIS IN WHILE LOOP
 
 	dir <- getLine
-	--printGrid (replaceNth 1 [99] ([[1,1,1,1],[2,2,2,2]]))
-	printGrid (updateGrid (getDirection dir) undoGrid)
+	printGrid (replaceNth (indY undoGrid 6) [9,9,9,9] undoGrid)
+
+	--printGrid (updateGrid (getDirection dir) undoGrid)
+	
 	--printGrid undoGrid
 	
