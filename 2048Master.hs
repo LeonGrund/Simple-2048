@@ -40,11 +40,13 @@ printGrid x = do {putStrLn $ show (x!!0);
 		  putStrLn $ show (x!!2);
 		  putStrLn $ show (x!!3);}
 
+--check if num is in row 
 checkRow :: Integer -> [Integer] ->Bool
 checkRow num row 
          |num`elem`row =True
          |otherwise=False
 
+--given a grid and a num, indY returns the row number (y index) containing that num in grid 
 indY :: [[Integer]] -> Integer -> Integer
 indY grid num = 
      	  if (checkRow num (grid!!0))
@@ -56,6 +58,32 @@ indY grid num =
 		       else if (checkRow num (grid!!3))
 		       	    then 3
 			    else 9999
+
+--checks what col the num is in the particular row
+indXHelper :: [Integer] -> Integer -> Integer
+indXHelper row num =
+	   if (row!!0 == num)
+	      then 0
+	      else if (row!!1 == num)
+	      	   then 1
+		   else if (row!!2 == num)
+		    	then 2
+			else if (row!!3 == num)
+			    then 3
+			    else 9999
+
+--checks each row for num and return the col number (x index) of the num in grid
+indX :: [[Integer]] -> Integer -> Integer
+indX grid num = 
+     	  if (checkRow num (grid!!0) && (indXHelper (grid!!0) num) /= 9999)
+	     then (indXHelper (grid!!0) num)
+	     else if (checkRow num (grid!!1) && (indXHelper (grid!!1) num) /= 9999)
+	     	   then (indXHelper (grid!!1) num)
+		   else if (checkRow num (grid!!2) && (indXHelper (grid!!2) num) /= 9999)
+	     	   	then (indXHelper (grid!!2) num)
+			else if (checkRow num (grid!!3) && (indXHelper (grid!!3) num) /= 9999)
+	     		     then (indXHelper (grid!!3) num)
+			     else 9999
 
 replaceNth n newVal (x:xs)
      | n == 0 = newVal:xs
@@ -111,10 +139,8 @@ main = do
 
 --THIS IN WHILE LOOP
 
-	dir <- getLine
-	printGrid (replaceNth (indY undoGrid 6) [9,9,9,9] undoGrid)
+	dir <- getLine	
 
-	--printGrid (updateGrid (getDirection dir) undoGrid)
-	
-	--printGrid undoGrid
-	
+	--replace the row containing 6 with [9,9,9,9]
+	--printGrid (replaceNth (indY undoGrid 6) [9,9,9,9] undoGrid)
+
