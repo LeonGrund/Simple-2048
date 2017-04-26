@@ -44,13 +44,13 @@ replaceNth n newVal (x:xs)
      | n == 0 = newVal:xs
      | otherwise = x:replaceNth (n-1) newVal xs
 
-getDirection :: String -> Integer
+getDirection :: String -> String
 getDirection dir = case dir of
-	     "w" -> 1
-	     "d" -> 3
-	     "s" -> 2
-	     "a" -> 4
-	     _ -> 5
+	     "w" -> "up"
+	     "d" -> "right"
+	     "s" -> "down"
+	     "a" -> "left"
+	     _ -> "ErrorInvalidDir"
 
 upGrid :: [[Integer]] -> [[Integer]]
 upGrid g = g
@@ -67,15 +67,15 @@ leftGrid g = g
 
 --up/down/right/leftGrid have to be coded
  
-updateGrid :: Integer -> [[Integer]] -> [[Integer]]
+updateGrid :: String -> [[Integer]] -> [[Integer]]
 updateGrid dir grid =
-	   if dir == 1
+	   if dir == "up"
 	      then (replaceNth 1 [99] grid)
-	      else if dir == 2
+	      else if dir == "down"
 		then  (downGrid grid)
-		else if dir == 3
+		else if dir == "right"
 			then (rightGrid grid)
-			else if dir == 4
+			else if dir == "left"
 			     then (leftGrid grid)
 			     else grid
 
