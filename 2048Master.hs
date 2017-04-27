@@ -115,7 +115,7 @@ leftGrid g = g
 updateGrid :: String -> [[Integer]] -> [[Integer]]
 updateGrid dir grid =
 	   if dir == "up"
-	      then (replaceNth 1 [99] grid)
+	      then (upGrid	 grid)
 	      else if dir == "down"
 		then  (downGrid grid)
 		else if dir == "right"
@@ -132,6 +132,43 @@ updateGrid 3 grid = rightGrid grid
 updateGrid _ grid = grid
 -}
 
+replaceXY :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
+replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) = 
+		if (y == 0 && x == 0)
+			then [newVal,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 0 && x == 1)
+			then [a,newVal,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 0 && x == 2)
+			then [a,b,newVal,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 0 && x == 3)
+			then [a,b,c,newVal] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 1 && x == 0)
+			then [a,b,c,d] : [newVal,f,g,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 1 && x == 1)
+			then [a,b,c,d] : [e,newVal,g,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 1 && x == 2)
+			then [a,b,c,d] : [e,f,newVal,h] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y == 1 && x == 3)
+			then [a,b,c,d] : [e,f,g,newVal] : [i,j,k,l]:[[m,n,o,p]]
+		else if (y  == 2 && x == 0)
+			then [a,b,c,d] : [e,f,g,h] : [newVal,j,k,l]:[[m,n,o,p]]
+		else if (y == 2 && x == 1)
+			then [a,b,c,d] : [e,f,g,h] : [i,newVal,k,l]:[[m,n,o,p]]
+		else if (y == 2 && x == 2)
+			then [a,b,c,d] : [e,f,g,h] : [i,j,newVal,l]:[[m,n,o,p]]
+		else if (y == 2 && x == 3)
+			then [a,b,c,d] : [e,f,g,h] : [i,j,k,newVal]:[[m,n,o,p]]
+		else if (y == 3 && x == 0)
+			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[newVal,n,o,p]]
+		else if (y == 3 && x == 1)
+			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,newVal,o,p]]
+		else if (y == 3 && x == 2)
+			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,newVal,p]]
+		else if (y == 3 && x == 3)
+			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,newVal]]
+	
+		else [[1]]
+		
 main = do
 	intro
 	printGrid undoGrid
