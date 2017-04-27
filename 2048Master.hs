@@ -10,29 +10,23 @@ maxUndo = 1
 
 --instantiate grids
 grid = [[],[],[],[]]
-undoGrid = [[1,2,3,4],
-	       [5,6,7,8],
-	       [9,10,11,12],
-	       [13,14,15,16]]
+undoGrid = [[0,0,0,0],
+	       [0,0,1,0],
+	       [0,0,0,0],
+	       [0,0,0,0]]
 
 --instantiate boolean
 hasUndone = True
 
 --we want to write a function that prints out introduction
 intro :: IO ()
-intro = do {putStrLn "#################################"; 
+intro = do {putStrLn "####################################"; 
 			putStrLn "           Console2048           ";
-			putStrLn "#################################";
-			putStrLn "Use the arrow keys to move around";
+			putStrLn "####################################";
+			putStrLn "Use the w,a,s,d keys to move around";
 			putStrLn " Combine numbers to get to 2048! ";
-			putStrLn " ";
-			putStrLn "#################################";
-			putStrLn " ";
-			putStrLn "     Press any key to start...   ";
-			putStrLn " ";
-			putStrLn "#################################";}
-
---intro x = #################################\n\n     Press any key to start...   "
+			putStrLn "####################################";
+			putStrLn " ";}
 
 printGrid :: [[Integer]] -> IO ()
 printGrid x = do {putStrLn $ show (x!!0);
@@ -46,44 +40,44 @@ checkRow num row
          |num`elem`row =True
          |otherwise=False
 
---given a grid and a num, indY returns the row number (y index) containing that num in grid 
+--given a grid and a number, indY returns the row number (y index) containing that number 
 indY :: [[Integer]] -> Integer -> Integer
 indY grid num = 
      	  if (checkRow num (grid!!0))
 	     then 0
-	     else if (checkRow num (grid!!1))
-	     	  then 1
-		  else if (checkRow num (grid!!2))
-		       then 2
-		       else if (checkRow num (grid!!3))
-		       	    then 3
-			    else 9999
+	  else if (checkRow num (grid!!1))
+	     then 1
+	  else if (checkRow num (grid!!2))
+	     then 2
+	  else if (checkRow num (grid!!3))
+	     then 3
+	  else 9999
 
---checks what col the num is in the particular row
+--returns what col the number is in the particular row
 indXHelper :: [Integer] -> Integer -> Integer
 indXHelper row num =
 	   if (row!!0 == num)
 	      then 0
-	      else if (row!!1 == num)
-	      	   then 1
-		   else if (row!!2 == num)
-		    	then 2
-			else if (row!!3 == num)
-			    then 3
-			    else 9999
+	   else if (row!!1 == num)
+	      then 1
+	   else if (row!!2 == num)
+	      then 2
+	   else if (row!!3 == num)
+	      then 3
+	   else 9999
 
---checks each row for num and return the col number (x index) of the num in grid
+--checks each row for the number and return the col number (x index)
 indX :: [[Integer]] -> Integer -> Integer
 indX grid num = 
      	  if (checkRow num (grid!!0))
 	     then (indXHelper (grid!!0) num)
-	     else if (checkRow num (grid!!1))
-	     	   then (indXHelper (grid!!1) num)
-		   else if (checkRow num (grid!!2))
-	     	   	then (indXHelper (grid!!2) num)
-			else if (checkRow num (grid!!3))
-	     		     then (indXHelper (grid!!3) num)
-			     else 9999
+	  else if (checkRow num (grid!!1))
+	     then (indXHelper (grid!!1) num)
+	  else if (checkRow num (grid!!2))
+	     then (indXHelper (grid!!2) num)
+	  else if (checkRow num (grid!!3))
+	     then (indXHelper (grid!!3) num)
+	  else 9999
 
 replaceNth n newVal (x:xs)
      | n == 0 = newVal:xs
@@ -97,41 +91,7 @@ getDirection dir = case dir of
 	     "a" -> "left"
 	     _ -> "ErrorInvalidDir"
 
-upGrid :: [[Integer]] -> [[Integer]]
-upGrid g = g
-
-downGrid :: [[Integer]] -> [[Integer]]
-downGrid g = g 
-
-rightGrid :: [[Integer]] -> [[Integer]]
-rightGrid g = g
-
-leftGrid :: [[Integer]] -> [[Integer]]
-leftGrid g = g
-
-
---up/down/right/leftGrid have to be coded
- 
-updateGrid :: String -> [[Integer]] -> [[Integer]]
-updateGrid dir grid =
-	   if dir == "up"
-	      then (upGrid	 grid)
-	      else if dir == "down"
-		then  (downGrid grid)
-		else if dir == "right"
-			then (rightGrid grid)
-			else if dir == "left"
-			     then (leftGrid grid)
-			     else grid
-
-{-
-updateGrid 1 grid = upGrid grid 
-updateGrid 2 grid = downGrid grid
-updateGrid 4 grid = leftGrid grid
-updateGrid 3 grid = rightGrid grid
-updateGrid _ grid = grid
--}
-
+--replaces a number in grid at x,y with newVal and return that updated grid
 replaceXY :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
 replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) = 
 		if (y == 0 && x == 0)
@@ -168,23 +128,38 @@ replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) =
 			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,newVal]]
 	
 		else [[1]]
-		
+
+--calls the replaceXY function depending on the move 
+upGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
+upGrid x y newVal grid = (replaceXY x 0 newVal grid)   
+
+downGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
+downGrid x y newVal grid = (replaceXY x 3 newVal grid)   
+
+leftGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
+leftGrid x y newVal grid = (replaceXY 0 y newVal grid)   
+
+rightGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
+rightGrid x y newVal grid = (replaceXY 3 y newVal grid)   
+
+
+--main function: calls helper function to update grid depending on user input 
+updateGrid :: String -> Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
+updateGrid dir x y newVal grid =
+	   if dir == "up"
+	      then (upGrid x y newVal grid)
+	   else if dir == "down"
+	      then (downGrid x y newVal grid)
+	   else if dir == "right"
+	      then (rightGrid x y newVal grid)
+	   else if dir == "left"
+                    then (leftGrid x y newVal grid)
+                 else grid
+
+
 main = do
-	intro
-	printGrid undoGrid
 
-
---THIS IN WHILE LOOP
-
-	dir <- getLine	
-
-	--replace the row containing 6 with [9,9,9,9]
-	--printGrid (replaceNth (indY undoGrid 6) [9,9,9,9] undoGrid)
-
-	--replace the row containing at index of col where 4 is  with [9,9,9,9]
-	printGrid (replaceNth (indX undoGrid 4) [9,9,9,9] undoGrid)
-
-	--printGrid (updateGrid (getDirection dir) undoGrid)
-	
-	--printGrid undoGrid
-	
+intro
+printGrid undoGrid
+dir <- getLine
+printGrid (updateGrid (getDirection dir) (indX undoGrid 1) (indY undoGrid 1) 1 (replaceXY (indX undoGrid 1) (indY undoGrid 1) 0 undoGrid))		 
