@@ -156,10 +156,14 @@ updateGrid dir x y newVal grid =
                     then (leftGrid x y newVal grid)
                  else grid
 
-
+playGame :: [[Integer]] -> IO ()
+playGame grid = do {
+			dir <- getLine;
+			printGrid (updateGrid (getDirection dir) (indX grid 1) (indY grid 1) 1 (replaceXY (indX grid 1) (indY grid 1) 0 grid));
+			playGame (updateGrid (getDirection dir) (indX grid 1) (indY grid 1) 1 (replaceXY (indX grid 1) (indY grid 1) 0 grid));
+			}
 main = do
 
 intro
-printGrid undoGrid
-dir <- getLine
-printGrid (updateGrid (getDirection dir) (indX undoGrid 1) (indY undoGrid 1) 1 (replaceXY (indX undoGrid 1) (indY undoGrid 1) 0 undoGrid))		 
+playGame undoGrid
+		 
