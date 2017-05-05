@@ -132,6 +132,38 @@ replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) =
 			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,newVal]]
 	
 		else [[1]]
+		
+isZero :: [[Integer]] -> [(Integer,Integer)]
+isZero ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) = 
+  let l1 = [] in 
+  let l2 = if (a == 0) then ((0,0) : l1) else l1 in
+  let l3 = if (b == 0) then ((0,1) : l2) else l2 in 
+  let l4 = if (c == 0) then ((0,2) : l3) else l3 in 
+  let l5 = if (d == 0) then ((0,3) : l4) else l4 in
+  let l6 = if (e == 0) then ((1,0) : l5) else l5 in
+  let l7 = if (f == 0) then ((1,1) : l6) else l6 in
+  let l8 = if (g == 0) then ((1,2) : l7) else l7 in
+  let l9 = if (h == 0) then ((1,3) : l8) else l8 in 
+  let l10 = if (i == 0) then ((2,0) : l9) else l9 in
+  let l11 = if (j == 0) then ((2,1) : l10) else l10 in
+  let l12 = if (k == 0) then ((2,2) : l11) else l11 in  
+  let l13 = if (l == 0) then ((2,3) : l12) else l12 in
+  let l14 = if (m == 0) then ((3,0) : l13) else l13 in
+  let l15 = if (n == 0) then ((3,1) : l14) else l14 in
+  let l16 = if (o == 0) then ((3,2) : l15) else l15 in
+  let l17 = if (p == 0) then ((3,3) : l16) else l16 in l16 	
+isZero _ = [(4,5)]  
+	
+printTuple :: (Integer,Integer) -> String
+printTuple (x,y) = "(" ++ (show x) ++ "," ++ (show y) ++ ")"
+
+printTupleList :: [(Integer,Integer)] -> IO ()
+printTupleList xs = putStrLn . unlines . map printTuple $ xs
+
+
+--take grid and number, spawn grid with number
+spawnNum :: [[Integer]] -> Integer -> [[Integer]]
+spawnNum grid n = replaceXY (fst ((isZero grid)!!0)) (snd ((isZero grid)!!0)) n grid
 
 --calls the replaceXY function depending on the move 
 upGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
