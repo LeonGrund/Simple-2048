@@ -1,0 +1,10 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "task-2048Master",
+      "appliesTo": "2048Master.hs",
+      "type": "command"
+    }
+  ]
+}

@@ -12,7 +12,7 @@ maxUndo = 1
 grid = [[],[],[],[]]
 undoGrid = [[0,0,0,0],
 	       [0,0,1,0],
-	       [0,0,0,0],
+	       [0,0,0,1],
 	       [0,0,0,0]]
 
 --instantiate boolean
@@ -33,6 +33,10 @@ printGrid x = do {putStrLn $ show (x!!0);
 	      	  putStrLn $ show (x!!1);
 		  putStrLn $ show (x!!2);
 		  putStrLn $ show (x!!3);}
+
+printIndex :: [[Integer]] -> IO ()
+printIndex x = do {putStrLn $ show (x!!0);
+	      	  putStrLn $ show (x!!1);}
 
 --check if num is in row 
 checkRow :: Integer -> [Integer] ->Bool
@@ -153,17 +157,35 @@ updateGrid dir x y newVal grid =
 	   else if dir == "right"
 	      then (rightGrid x y newVal grid)
 	   else if dir == "left"
-                    then (leftGrid x y newVal grid)
-                 else grid
+           then (leftGrid x y newVal grid)
+       else grid
+
+--take grid and number we looking for, output [[x,y],[x,y]] list pairs
+indexPairs :: [[Integer]] -> Integer -> [[Integer]]
+indexPairs grid num = 
+		if grid /= [[1]]
+			then ([[(indX grid num),(indY grid num)]] ++ (indexPairs (replaceXY (indX grid num) (indY grid num) 0 grid) num))
+		else [[1]]
+
+validNumCheck :: [[Integer]] -> Bool
+validNumCheck list =
+		if list!!1 == [9999,9999]
+			then False
+		else True
 
 playGame :: [[Integer]] -> IO ()
 playGame grid = do {
+			printIndex (indexPairs grid 1);
 			dir <- getLine;
+			--if validNumCheck (indexPairs grid 1)
 			printGrid (updateGrid (getDirection dir) (indX grid 1) (indY grid 1) 1 (replaceXY (indX grid 1) (indY grid 1) 0 grid));
 			playGame (updateGrid (getDirection dir) (indX grid 1) (indY grid 1) 1 (replaceXY (indX grid 1) (indY grid 1) 0 grid));
 			}
+
+
 main = do
 
 intro
+printGrid undoGrid
 playGame undoGrid
 		 
