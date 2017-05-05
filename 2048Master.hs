@@ -208,24 +208,25 @@ validNumCheck list =
 playGame :: [[Integer]] -> Integer -> IO ()
 playGame grid curNum = do {
 			
-
+			printIndex (indexPairs grid curNum);
 			dir <- getLine;
 
 			(if (getDirection dir) == "ErrorInvalidDir"
 				then (playGame grid curNum)
 			else do {
 
-				printIndex (indexPairs grid curNum);
+				--printIndex (indexPairs grid curNum);
 
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) 
 			-- we know they should be added, call andrew_func 
-				else printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)));
+				else printGrid (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)));
 
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) curNum
 
-				else playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2));
+				else playGame (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)) (curNum*2));
+				--playGame (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid) (curNum*2)) (curNum*2)));
 			});
 			}
 
