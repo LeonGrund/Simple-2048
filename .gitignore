@@ -17,3 +17,8 @@ cabal.sandbox.config
 *.eventlog
 .stack-work/
 cabal.project.local
+/.vs/config/applicationhost.config
+/.vs/solitaire_FP/v15/.suo
+/.vs/tasks.vs.json
+/.vs/VSWorkspaceState.json
+/.vs/config/applicationhost.config

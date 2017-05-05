@@ -11,8 +11,8 @@ maxUndo = 1
 --instantiate grids
 grid = [[],[],[],[]]
 undoGrid = [[0,0,0,0],
-	       [0,0,1,0],
-	       [0,0,0,1],
+	       [0,0,2,0],
+	       [0,0,0,2],
 	       [0,0,0,0]]
 
 --instantiate boolean
@@ -169,17 +169,32 @@ indexPairs grid num =
 
 validNumCheck :: [[Integer]] -> Bool
 validNumCheck list =
-		if list!!1 == [9999,9999]
+		if (list!!1)!!0 == 9999
 			then False
 		else True
 
-playGame :: [[Integer]] -> IO ()
-playGame grid = do {
-			printIndex (indexPairs grid 1);
+playGame :: [[Integer]] -> Integer -> IO ()
+playGame grid curNum = do {
+			
+
 			dir <- getLine;
-			--if validNumCheck (indexPairs grid 1)
-			printGrid (updateGrid (getDirection dir) (indX grid 1) (indY grid 1) 1 (replaceXY (indX grid 1) (indY grid 1) 0 grid));
-			playGame (updateGrid (getDirection dir) (indX grid 1) (indY grid 1) 1 (replaceXY (indX grid 1) (indY grid 1) 0 grid));
+
+			(if (getDirection dir) == "ErrorInvalidDir"
+				then (playGame grid curNum)
+			else do {
+
+				printIndex (indexPairs grid curNum);
+
+				(if (validNumCheck (indexPairs grid curNum)) == True
+					then printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) 
+			-- we know they should be added, call andrew_func 
+				else printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)));
+
+				(if (validNumCheck (indexPairs grid curNum)) == True
+					then playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) curNum
+
+				else playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2));
+			});
 			}
 
 
@@ -187,5 +202,5 @@ main = do
 
 intro
 printGrid undoGrid
-playGame undoGrid
+playGame undoGrid 2
 		 
