@@ -28,6 +28,20 @@ intro = do {putStrLn "####################################";
 			putStrLn "####################################";
 			putStrLn " ";}
 
+--win print screen
+win :: IO ()
+win = do {putStrLn "####################################"; 
+			putStrLn "           Console2048           ";
+			putStrLn "####################################";
+			putStrLn "Congratulations!!! You got 2048!!! ";
+			putStrLn "####################################";
+			putStrLn " ";}
+
+--spaces betweeens grids
+cont :: IO ()
+cont = do {putStrLn " "; 
+			putStrLn " ";}
+
 printGrid :: [[Integer]] -> IO ()
 printGrid x = do {putStrLn $ show (x!!0);
 	      	  putStrLn $ show (x!!1);
@@ -163,7 +177,7 @@ printTupleList xs = putStrLn . unlines . map printTuple $ xs
 
 --take grid and number, spawn grid with number
 spawnNum :: [[Integer]] -> Integer -> [[Integer]]
-spawnNum grid n = replaceXY (fst ((isZero grid)!!0)) (snd ((isZero grid)!!0)) n grid
+spawnNum grid n = replaceXY (fst ((isZero grid)!!2)) (snd ((isZero grid)!!3)) n grid
 
 --calls the replaceXY function depending on the move 
 upGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
@@ -208,25 +222,28 @@ validNumCheck list =
 playGame :: [[Integer]] -> Integer -> IO ()
 playGame grid curNum = do {
 			
-			printIndex (indexPairs grid curNum);
+			--printIndex (indexPairs grid curNum);
+			(if curNum == 2048
+				then win
+			else cont);
+
 			dir <- getLine;
 
 			(if (getDirection dir) == "ErrorInvalidDir"
 				then (playGame grid curNum)
 			else do {
 
-				--printIndex (indexPairs grid curNum);
-
+				
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) 
-			-- we know they should be added, call andrew_func 
+	 
 				else printGrid (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)));
 
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) curNum
 
 				else playGame (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)) (curNum*2));
-				--playGame (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid) (curNum*2)) (curNum*2)));
+				
 			});
 			}
 
