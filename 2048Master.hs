@@ -1,5 +1,6 @@
 import Data.List
 import System.IO
+import System.Random
 
 --instantiate integers
 score = 0
@@ -174,10 +175,12 @@ printTuple (x,y) = "(" ++ (show x) ++ "," ++ (show y) ++ ")"
 printTupleList :: [(Integer,Integer)] -> IO ()
 printTupleList xs = putStrLn . unlines . map printTuple $ xs
 
+randNum :: Int -> IO Int
+randNum max = getStdRandom (randomR (0, max))
 
 --take grid and number, spawn grid with number
-spawnNum :: [[Integer]] -> Integer -> [[Integer]]
-spawnNum grid n = replaceXY (fst ((isZero grid)!!2)) (snd ((isZero grid)!!3)) n grid
+spawnNum :: Int -> [[Integer]] -> Integer -> [[Integer]]
+spawnNum index grid newVal = replaceXY (fst ((isZero grid)!!index)) (snd ((isZero grid)!!index)) newVal grid
 
 --calls the replaceXY function depending on the move 
 upGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
@@ -203,7 +206,7 @@ updateGrid dir x y newVal grid =
 	   else if dir == "right"
 	      then (rightGrid x y newVal grid)
 	   else if dir == "left"
-           then (leftGrid x y newVal grid)
+              then (leftGrid x y newVal grid)
        else grid
 
 --take grid and number we looking for, output [[x,y],[x,y]] list pairs
@@ -232,17 +235,17 @@ playGame grid curNum = do {
 			(if (getDirection dir) == "ErrorInvalidDir"
 				then (playGame grid curNum)
 			else do {
-
+				indx <- randNum 13; 
 				
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) 
 	 
-				else printGrid (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)));
+				else printGrid (spawnNum indx (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)));
 
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) curNum
 
-				else playGame (spawnNum (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)) (curNum*2));
+				else playGame (spawnNum indx (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)) (curNum*2));
 				
 			});
 			}
