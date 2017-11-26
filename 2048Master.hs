@@ -1,6 +1,6 @@
 import Data.List
 import System.IO
-import System.Random
+--import System.Random
 
 --instantiate integers
 score = 0
@@ -21,17 +21,17 @@ hasUndone = True
 
 --we want to write a function that prints out introduction
 intro :: IO ()
-intro = do {putStrLn "####################################"; 
+intro = do {putStrLn "####################################";
 			putStrLn "           Console2048           ";
 			putStrLn "####################################";
-			putStrLn "Use the w,a,s,d keys to move around";
+			putStrLn "Use the w, a, s or d key followed by the enter key to move numbers around";
 			putStrLn " Combine numbers to get to 2048! ";
 			putStrLn "####################################";
 			putStrLn " ";}
 
 --win print screen
 win :: IO ()
-win = do {putStrLn "####################################"; 
+win = do {putStrLn "####################################";
 			putStrLn "           Console2048           ";
 			putStrLn "####################################";
 			putStrLn "Congratulations!!! You got 2048!!! ";
@@ -40,7 +40,7 @@ win = do {putStrLn "####################################";
 
 --spaces betweeens grids
 cont :: IO ()
-cont = do {putStrLn " "; 
+cont = do {putStrLn " ";
 			putStrLn " ";}
 
 printGrid :: [[Integer]] -> IO ()
@@ -53,15 +53,15 @@ printIndex :: [[Integer]] -> IO ()
 printIndex x = do {putStrLn $ show (x!!0);
 	      	  putStrLn $ show (x!!1);}
 
---check if num is in row 
+--check if num is in row
 checkRow :: Integer -> [Integer] ->Bool
-checkRow num row 
+checkRow num row
          |num`elem`row =True
          |otherwise=False
 
---given a grid and a number, indY returns the row number (y index) containing that number 
+--given a grid and a number, indY returns the row number (y index) containing that number
 indY :: [[Integer]] -> Integer -> Integer
-indY grid num = 
+indY grid num =
      	  if (checkRow num (grid!!0))
 	     then 0
 	  else if (checkRow num (grid!!1))
@@ -87,7 +87,7 @@ indXHelper row num =
 
 --checks each row for the number and return the col number (x index)
 indX :: [[Integer]] -> Integer -> Integer
-indX grid num = 
+indX grid num =
      	  if (checkRow num (grid!!0))
 	     then (indXHelper (grid!!0) num)
 	  else if (checkRow num (grid!!1))
@@ -112,7 +112,7 @@ getDirection dir = case dir of
 
 --replaces a number in grid at x,y with newVal and return that updated grid
 replaceXY :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
-replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) = 
+replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) =
 		if (y == 0 && x == 0)
 			then [newVal,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,p]]
 		else if (y == 0 && x == 1)
@@ -145,30 +145,30 @@ replaceXY x y newVal ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) =
 			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,newVal,p]]
 		else if (y == 3 && x == 3)
 			then [a,b,c,d] : [e,f,g,h] : [i,j,k,l]:[[m,n,o,newVal]]
-	
+
 		else [[1]]
-		
+
 isZero :: [[Integer]] -> [(Integer,Integer)]
-isZero ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) = 
-  let l1 = [] in 
+isZero ([a,b,c,d] : [e,f,g,h] : [i,j,k,l] : [[m,n,o,p]]) =
+  let l1 = [] in
   let l2 = if (a == 0) then ((0,0) : l1) else l1 in
-  let l3 = if (b == 0) then ((0,1) : l2) else l2 in 
-  let l4 = if (c == 0) then ((0,2) : l3) else l3 in 
+  let l3 = if (b == 0) then ((0,1) : l2) else l2 in
+  let l4 = if (c == 0) then ((0,2) : l3) else l3 in
   let l5 = if (d == 0) then ((0,3) : l4) else l4 in
   let l6 = if (e == 0) then ((1,0) : l5) else l5 in
   let l7 = if (f == 0) then ((1,1) : l6) else l6 in
   let l8 = if (g == 0) then ((1,2) : l7) else l7 in
-  let l9 = if (h == 0) then ((1,3) : l8) else l8 in 
+  let l9 = if (h == 0) then ((1,3) : l8) else l8 in
   let l10 = if (i == 0) then ((2,0) : l9) else l9 in
   let l11 = if (j == 0) then ((2,1) : l10) else l10 in
-  let l12 = if (k == 0) then ((2,2) : l11) else l11 in  
+  let l12 = if (k == 0) then ((2,2) : l11) else l11 in
   let l13 = if (l == 0) then ((2,3) : l12) else l12 in
   let l14 = if (m == 0) then ((3,0) : l13) else l13 in
   let l15 = if (n == 0) then ((3,1) : l14) else l14 in
   let l16 = if (o == 0) then ((3,2) : l15) else l15 in
-  let l17 = if (p == 0) then ((3,3) : l16) else l16 in l16 	
-isZero _ = [(4,5)]  
-	
+  let l17 = if (p == 0) then ((3,3) : l16) else l16 in l16
+isZero _ = [(4,5)]
+
 printTuple :: (Integer,Integer) -> String
 printTuple (x,y) = "(" ++ (show x) ++ "," ++ (show y) ++ ")"
 
@@ -182,21 +182,21 @@ randNum max = getStdRandom (randomR (0, max))
 spawnNum :: Int -> [[Integer]] -> Integer -> [[Integer]]
 spawnNum index grid newVal = replaceXY (fst ((isZero grid)!!index)) (snd ((isZero grid)!!index)) newVal grid
 
---calls the replaceXY function depending on the move 
+--calls the replaceXY function depending on the move
 upGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
-upGrid x y newVal grid = (replaceXY x 0 newVal grid)   
+upGrid x y newVal grid = (replaceXY x 0 newVal grid)
 
 downGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
-downGrid x y newVal grid = (replaceXY x 3 newVal grid)   
+downGrid x y newVal grid = (replaceXY x 3 newVal grid)
 
 leftGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
-leftGrid x y newVal grid = (replaceXY 0 y newVal grid)   
+leftGrid x y newVal grid = (replaceXY 0 y newVal grid)
 
 rightGrid :: Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
-rightGrid x y newVal grid = (replaceXY 3 y newVal grid)   
+rightGrid x y newVal grid = (replaceXY 3 y newVal grid)
 
 
---main function: calls helper function to update grid depending on user input 
+--main function: calls helper function to update grid depending on user input
 updateGrid :: String -> Integer -> Integer -> Integer -> [[Integer]] -> [[Integer]]
 updateGrid dir x y newVal grid =
 	   if dir == "up"
@@ -211,7 +211,7 @@ updateGrid dir x y newVal grid =
 
 --take grid and number we looking for, output [[x,y],[x,y]] list pairs
 indexPairs :: [[Integer]] -> Integer -> [[Integer]]
-indexPairs grid num = 
+indexPairs grid num =
 		if grid /= [[1]]
 			then ([[(indX grid num),(indY grid num)]] ++ (indexPairs (replaceXY (indX grid num) (indY grid num) 0 grid) num))
 		else [[1]]
@@ -224,7 +224,7 @@ validNumCheck list =
 
 playGame :: [[Integer]] -> Integer -> IO ()
 playGame grid curNum = do {
-			
+
 			--printIndex (indexPairs grid curNum);
 			(if curNum == 2048
 				then win
@@ -235,18 +235,18 @@ playGame grid curNum = do {
 			(if (getDirection dir) == "ErrorInvalidDir"
 				then (playGame grid curNum)
 			else do {
-				indx <- randNum 13; 
-				
+				indx <- randNum 13;
+
 				(if (validNumCheck (indexPairs grid curNum)) == True
-					then printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) 
-	 
+					then printGrid (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid))))
+
 				else printGrid (spawnNum indx (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)));
 
 				(if (validNumCheck (indexPairs grid curNum)) == True
 					then playGame (updateGrid (getDirection dir) (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) curNum (replaceXY (((indexPairs grid curNum)!!1)!!0) (((indexPairs grid curNum)!!1)!!1) 0 (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) curNum (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)))) curNum
 
 				else playGame (spawnNum indx (updateGrid (getDirection dir) (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) (curNum*2) (replaceXY (((indexPairs grid curNum)!!0)!!0) (((indexPairs grid curNum)!!0)!!1) 0 grid)) (curNum*2)) (curNum*2));
-				
+
 			});
 			}
 
@@ -256,4 +256,3 @@ main = do
 intro
 printGrid undoGrid
 playGame undoGrid 2
-		 
